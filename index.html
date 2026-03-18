@@ -3,399 +3,589 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VivendasPark MVP</title>
+  <title>CondoPark MVP</title>
   <style>
     :root {
       color-scheme: light;
-      --bg: #f1f5f9;
-      --card: #ffffff;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-alt: #f1f5f9;
       --text: #0f172a;
       --muted: #64748b;
+      --border: #e2e8f0;
       --primary: #2563eb;
       --primary-hover: #1d4ed8;
-      --danger: #dc2626;
-      --danger-hover: #b91c1c;
-      --border: #e2e8f0;
       --success: #16a34a;
+      --shadow: 0 18px 44px rgba(15, 23, 42, 0.1);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     body {
       min-height: 100vh;
-      background: linear-gradient(135deg, #e0e7ff, #bfdbfe);
+      background: linear-gradient(180deg, #eff6ff 0%, var(--bg) 45%, #ffffff 100%);
       color: var(--text);
-      padding: 24px;
-      display: grid;
-      place-items: center;
+      padding: 20px 16px 32px;
     }
 
     .app {
-      width: min(920px, 100%);
-      background: var(--card);
-      border-radius: 20px;
-      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.18);
-      padding: 28px;
+      width: min(100%, 480px);
+      margin: 0 auto;
       display: grid;
-      gap: 20px;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    h1 {
-      font-size: clamp(1.5rem, 2vw, 2rem);
-      margin-bottom: 6px;
-    }
-
-    .subtitle {
-      color: var(--muted);
-      font-size: 0.95rem;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 12px;
-    }
-
-    .metric {
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px;
-    }
-
-    .metric small {
-      color: var(--muted);
-      display: block;
-      margin-bottom: 6px;
-    }
-
-    .metric strong {
-      font-size: 1.5rem;
+      gap: 16px;
     }
 
     .panel {
+      background: var(--surface);
       border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+
+    .hero {
+      display: grid;
+      gap: 14px;
+    }
+
+    .eyebrow {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      line-height: 1.15;
+    }
+
+    .subtitle,
+    .helper,
+    .empty,
+    .meta,
+    .toast {
+      color: var(--muted);
+    }
+
+    .button-group {
+      display: grid;
+      gap: 10px;
+    }
+
+    button {
+      width: 100%;
+      border: none;
       border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+    }
+
+    button:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+
+    .primary-button {
+      background: var(--primary);
+      color: #ffffff;
+    }
+
+    .primary-button:hover:not(:disabled) {
+      background: var(--primary-hover);
+    }
+
+    .secondary-button {
+      background: var(--surface-alt);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .secondary-button:disabled {
+      cursor: not-allowed;
+      opacity: 0.75;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .section-header h2 {
+      font-size: 1.05rem;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 32px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #dbeafe;
+      color: var(--primary);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .cards {
+      display: grid;
+      gap: 12px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
       padding: 16px;
-      background: #fff;
+      background: var(--surface);
+      display: grid;
+      gap: 10px;
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .card-title strong {
+      font-size: 1rem;
+    }
+
+    .tag {
+      background: #dcfce7;
+      color: var(--success);
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .meta {
+      display: grid;
+      gap: 4px;
+      font-size: 0.92rem;
+    }
+
+    .empty {
+      text-align: center;
+      font-size: 0.94rem;
+      padding: 18px 10px 6px;
+    }
+
+    .test-button {
+      background: transparent;
+      color: var(--primary);
+      border: 1px dashed #93c5fd;
+      font-size: 0.92rem;
+      padding: 12px 14px;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      display: none;
+      align-items: end;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      width: min(100%, 480px);
+      background: var(--surface);
+      border-radius: 22px 22px 18px 18px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 14px;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .close-button {
+      width: auto;
+      padding: 8px 10px;
+      background: var(--surface-alt);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 12px;
     }
 
     form {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 10px;
-      align-items: end;
+      gap: 12px;
     }
 
     label {
       display: grid;
       gap: 6px;
-      font-weight: 600;
-      font-size: 0.9rem;
-    }
-
-    input,
-    select {
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px;
-      font-size: 0.95rem;
-      background: #fff;
-      color: var(--text);
-    }
-
-    .actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    button {
-      border: none;
-      border-radius: 10px;
-      background: var(--primary);
-      color: #fff;
-      font-size: 0.95rem;
-      font-weight: 600;
-      padding: 10px 14px;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-
-    button:hover {
-      background: var(--primary-hover);
-    }
-
-    .secondary {
-      background: #334155;
-    }
-
-    .secondary:hover {
-      background: #1e293b;
-    }
-
-    .danger {
-      background: var(--danger);
-    }
-
-    .danger:hover {
-      background: var(--danger-hover);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
       font-size: 0.92rem;
-      margin-top: 10px;
+      font-weight: 600;
     }
 
-    th,
-    td {
-      padding: 10px;
-      border-bottom: 1px solid var(--border);
-      text-align: left;
-      vertical-align: middle;
+    input[type="datetime-local"] {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px 12px;
+      font-size: 1rem;
+      color: var(--text);
+      background: #fff;
     }
 
-    th {
-      color: var(--muted);
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+    .error {
+      min-height: 18px;
+      color: #dc2626;
+      font-size: 0.85rem;
     }
 
-    .status {
-      font-weight: 700;
-      color: var(--success);
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%) translateY(18px);
+      width: min(calc(100% - 32px), 420px);
+      background: #0f172a;
+      color: #ffffff;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 0.92rem;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
     }
 
-    .row-actions {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
     }
 
-    .empty {
-      color: var(--muted);
-      text-align: center;
-      margin-top: 12px;
-      font-size: 0.9rem;
+    @media (min-width: 720px) {
+      body {
+        padding-top: 32px;
+      }
+
+      .app {
+        width: min(100%, 760px);
+      }
+
+      .button-group {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .cards {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .modal-backdrop {
+        align-items: center;
+      }
+
+      .modal {
+        border-radius: 22px;
+      }
     }
   </style>
 </head>
 <body>
   <main class="app">
-    <header class="header">
+    <section class="panel hero" aria-label="Dashboard">
       <div>
-        <h1>VivendasPark MVP</h1>
-        <p class="subtitle">CRUD local de veículos com persistência em banco de dados local (localStorage).</p>
+        <p class="eyebrow">CondoPark MVP</p>
+        <h1 id="greeting">Olá!</h1>
       </div>
-      <button id="testButton" type="button">Clique para testar</button>
-    </header>
-
-    <section class="grid" aria-label="Métricas">
-      <article class="metric">
-        <small>Total de veículos</small>
-        <strong id="totalVehicles">0</strong>
-      </article>
-      <article class="metric">
-        <small>Última atualização</small>
-        <strong id="lastUpdate">-</strong>
-      </article>
+      <p class="subtitle">Descubra vagas disponíveis no condomínio sem depender do grupo de WhatsApp.</p>
+      <div class="button-group">
+        <button id="openModalButton" class="primary-button" type="button">Liberar minha vaga</button>
+        <button class="secondary-button" type="button" disabled>Preciso de vaga</button>
+      </div>
+      <button id="testButton" class="test-button" type="button">Clique para testar</button>
     </section>
 
-    <section class="panel" aria-label="Formulário de cadastro">
-      <form id="vehicleForm">
-        <label>
-          Placa
-          <input id="plate" name="plate" type="text" maxlength="8" placeholder="ABC1D23" required />
-        </label>
-        <label>
-          Apartamento
-          <input id="apartment" name="apartment" type="text" placeholder="Bloco A - 101" required />
-        </label>
-        <label>
-          Vaga
-          <input id="spot" name="spot" type="text" placeholder="Vaga 12" required />
-        </label>
-        <label>
-          Status
-          <select id="status" name="status" required>
-            <option value="Ativo">Ativo</option>
-            <option value="Visitante">Visitante</option>
-            <option value="Inativo">Inativo</option>
-          </select>
-        </label>
-        <div class="actions">
-          <button id="saveButton" type="submit">Salvar</button>
-          <button id="cancelEditButton" class="secondary" type="button">Cancelar edição</button>
-        </div>
-      </form>
-    </section>
-
-    <section class="panel" aria-label="Lista de veículos">
-      <h2>Registros</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Placa</th>
-            <th>Apartamento</th>
-            <th>Vaga</th>
-            <th>Status</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody id="vehicleRows"></tbody>
-      </table>
-      <p id="emptyState" class="empty">Nenhum veículo cadastrado ainda.</p>
+    <section class="panel" aria-label="Lista de vagas disponíveis">
+      <div class="section-header">
+        <h2>Vagas disponíveis</h2>
+        <span id="availabilityCount" class="pill">0</span>
+      </div>
+      <div id="availabilityList" class="cards"></div>
+      <p id="emptyState" class="empty">Nenhuma vaga disponível no momento.</p>
     </section>
   </main>
 
+  <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <section class="modal">
+      <div class="modal-header">
+        <div>
+          <h2 id="modalTitle">Liberar minha vaga</h2>
+          <p class="helper">Defina o período em que sua vaga ficará disponível.</p>
+        </div>
+        <button id="closeModalButton" class="close-button" type="button" aria-label="Fechar modal">Fechar</button>
+      </div>
+
+      <form id="availabilityForm">
+        <label>
+          Início
+          <input id="startTime" name="startTime" type="datetime-local" required />
+        </label>
+
+        <label>
+          Fim
+          <input id="endTime" name="endTime" type="datetime-local" required />
+        </label>
+
+        <p id="formError" class="error" aria-live="polite"></p>
+
+        <button class="primary-button" type="submit">Publicar vaga</button>
+      </form>
+    </section>
+  </div>
+
+  <div id="toast" class="toast" aria-live="polite"></div>
+
   <script>
-    const DB_KEY = 'vivendaspark_vehicles';
-    let vehicles = [];
-    let editingId = null;
+    const USERS = [
+      { id: 'user-1', name: 'Mariana Costa', apartment: 'Bloco A • 101', phone: '11999990001' },
+      { id: 'user-2', name: 'Rafael Lima', apartment: 'Bloco B • 204', phone: '11999990002' },
+      { id: 'user-3', name: 'Patrícia Souza', apartment: 'Torre 2 • 307', phone: '11999990003' }
+    ];
+
+    const CURRENT_USER_ID = USERS[0].id;
+    const AVAILABILITY_KEY = 'condopark_availabilities';
+    const STATUS = {
+      AVAILABLE: 'AVAILABLE',
+      FINISHED: 'FINISHED'
+    };
+
+    let availabilities = [];
+    let toastTimer = null;
 
     const elements = {
-      form: document.getElementById('vehicleForm'),
-      plate: document.getElementById('plate'),
-      apartment: document.getElementById('apartment'),
-      spot: document.getElementById('spot'),
-      status: document.getElementById('status'),
-      rows: document.getElementById('vehicleRows'),
-      empty: document.getElementById('emptyState'),
-      totalVehicles: document.getElementById('totalVehicles'),
-      lastUpdate: document.getElementById('lastUpdate'),
-      saveButton: document.getElementById('saveButton'),
-      cancelEditButton: document.getElementById('cancelEditButton'),
+      greeting: document.getElementById('greeting'),
+      openModalButton: document.getElementById('openModalButton'),
+      closeModalButton: document.getElementById('closeModalButton'),
+      modalBackdrop: document.getElementById('modalBackdrop'),
+      availabilityForm: document.getElementById('availabilityForm'),
+      startTime: document.getElementById('startTime'),
+      endTime: document.getElementById('endTime'),
+      formError: document.getElementById('formError'),
+      availabilityList: document.getElementById('availabilityList'),
+      availabilityCount: document.getElementById('availabilityCount'),
+      emptyState: document.getElementById('emptyState'),
+      toast: document.getElementById('toast'),
       testButton: document.getElementById('testButton')
     };
 
-    function loadDatabase() {
-      const raw = localStorage.getItem(DB_KEY);
-      vehicles = raw ? JSON.parse(raw) : [];
-    }
-
-    function saveDatabase() {
-      localStorage.setItem(DB_KEY, JSON.stringify(vehicles));
-      elements.lastUpdate.textContent = new Date().toLocaleTimeString('pt-BR');
-    }
-
-    function resetForm() {
-      elements.form.reset();
-      editingId = null;
-      elements.saveButton.textContent = 'Salvar';
-    }
-
-    function fillForm(vehicle) {
-      elements.plate.value = vehicle.plate;
-      elements.apartment.value = vehicle.apartment;
-      elements.spot.value = vehicle.spot;
-      elements.status.value = vehicle.status;
-      editingId = vehicle.id;
-      elements.saveButton.textContent = 'Atualizar';
-    }
-
-    function removeVehicle(id) {
-      vehicles = vehicles.filter(function (vehicle) {
-        return vehicle.id !== id;
+    function getCurrentUser() {
+      return USERS.find(function (user) {
+        return user.id === CURRENT_USER_ID;
       });
-      saveDatabase();
-      render();
     }
 
-    function createOrUpdateVehicle(event) {
-      event.preventDefault();
-      const payload = {
-        id: editingId || Date.now().toString(),
-        plate: elements.plate.value.trim().toUpperCase(),
-        apartment: elements.apartment.value.trim(),
-        spot: elements.spot.value.trim(),
-        status: elements.status.value
-      };
+    function toInputValue(date) {
+      const timezoneOffset = date.getTimezoneOffset() * 60000;
+      return new Date(date.getTime() - timezoneOffset).toISOString().slice(0, 16);
+    }
 
-      if (editingId) {
-        vehicles = vehicles.map(function (vehicle) {
-          return vehicle.id === editingId ? payload : vehicle;
+    function setDefaultTimes() {
+      const now = new Date();
+      const end = new Date(now.getTime() + 4 * 60 * 60 * 1000);
+      elements.startTime.value = toInputValue(now);
+      elements.endTime.value = toInputValue(end);
+      elements.formError.textContent = '';
+    }
+
+    function loadAvailabilities() {
+      const raw = localStorage.getItem(AVAILABILITY_KEY);
+      availabilities = raw ? JSON.parse(raw) : [];
+    }
+
+    function saveAvailabilities() {
+      localStorage.setItem(AVAILABILITY_KEY, JSON.stringify(availabilities));
+    }
+
+    function showToast(message) {
+      clearTimeout(toastTimer);
+      elements.toast.textContent = message;
+      elements.toast.classList.add('show');
+      toastTimer = setTimeout(function () {
+        elements.toast.classList.remove('show');
+      }, 2600);
+    }
+
+    function formatRange(startTime, endTime) {
+      const start = new Date(startTime);
+      const end = new Date(endTime);
+      const dateLabel = start.toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit'
+      });
+      const startLabel = start.toLocaleTimeString('pt-BR', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      const endLabel = end.toLocaleTimeString('pt-BR', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+      return dateLabel + ' • ' + startLabel + ' às ' + endLabel;
+    }
+
+    function syncStatuses() {
+      const now = Date.now();
+      let changed = false;
+
+      availabilities = availabilities.map(function (availability) {
+        if (availability.status === STATUS.AVAILABLE && new Date(availability.endTime).getTime() <= now) {
+          changed = true;
+          return Object.assign({}, availability, { status: STATUS.FINISHED });
+        }
+        return availability;
+      });
+
+      if (changed) {
+        saveAvailabilities();
+      }
+    }
+
+    function getAvailableSpots() {
+      return availabilities
+        .filter(function (availability) {
+          return availability.status === STATUS.AVAILABLE;
+        })
+        .sort(function (first, second) {
+          return new Date(first.endTime).getTime() - new Date(second.endTime).getTime();
         });
-      } else {
-        vehicles.push(payload);
+    }
+
+    function renderGreeting() {
+      const currentUser = getCurrentUser();
+      elements.greeting.textContent = 'Olá, ' + currentUser.name.split(' ')[0] + '!';
+    }
+
+    function renderAvailabilities() {
+      syncStatuses();
+      const availableSpots = getAvailableSpots();
+      elements.availabilityList.innerHTML = '';
+      elements.availabilityCount.textContent = String(availableSpots.length);
+      elements.emptyState.style.display = availableSpots.length === 0 ? 'block' : 'none';
+
+      availableSpots.forEach(function (availability) {
+        const owner = USERS.find(function (user) {
+          return user.id === availability.ownerId;
+        });
+
+        if (!owner) {
+          return;
+        }
+
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.innerHTML = [
+          '<div class="card-title">',
+          '  <strong>' + owner.name + '</strong>',
+          '  <span class="tag">Disponível</span>',
+          '</div>',
+          '<div class="meta">',
+          '  <span>' + owner.apartment + '</span>',
+          '  <span>' + formatRange(availability.startTime, availability.endTime) + '</span>',
+          '</div>',
+          '<button class="primary-button" type="button" data-interest-id="' + availability.id + '">Tenho interesse</button>'
+        ].join('');
+        elements.availabilityList.appendChild(card);
+      });
+    }
+
+    function openModal() {
+      setDefaultTimes();
+      elements.modalBackdrop.classList.add('open');
+    }
+
+    function closeModal() {
+      elements.modalBackdrop.classList.remove('open');
+      elements.formError.textContent = '';
+    }
+
+    function handleCreateAvailability(event) {
+      event.preventDefault();
+
+      const startTime = elements.startTime.value;
+      const endTime = elements.endTime.value;
+
+      if (!startTime || !endTime) {
+        elements.formError.textContent = 'Preencha início e fim.';
+        return;
       }
 
-      saveDatabase();
-      resetForm();
-      render();
-    }
+      if (new Date(startTime).getTime() >= new Date(endTime).getTime()) {
+        elements.formError.textContent = 'O início precisa ser menor que o fim.';
+        return;
+      }
 
-    function render() {
-      elements.rows.innerHTML = '';
-      elements.totalVehicles.textContent = vehicles.length;
-      elements.empty.style.display = vehicles.length === 0 ? 'block' : 'none';
-
-      vehicles.forEach(function (vehicle) {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${vehicle.plate}</td>
-          <td>${vehicle.apartment}</td>
-          <td>${vehicle.spot}</td>
-          <td class="status">${vehicle.status}</td>
-          <td>
-            <div class="row-actions">
-              <button type="button" class="secondary" data-action="edit" data-id="${vehicle.id}">Editar</button>
-              <button type="button" class="danger" data-action="delete" data-id="${vehicle.id}">Excluir</button>
-            </div>
-          </td>
-        `;
-        elements.rows.appendChild(row);
+      availabilities.push({
+        id: 'availability-' + Date.now(),
+        ownerId: CURRENT_USER_ID,
+        startTime: new Date(startTime).toISOString(),
+        endTime: new Date(endTime).toISOString(),
+        status: STATUS.AVAILABLE
       });
+
+      saveAvailabilities();
+      renderAvailabilities();
+      closeModal();
+      showToast('Vaga liberada com sucesso.');
     }
 
-    elements.form.addEventListener('submit', createOrUpdateVehicle);
-    elements.cancelEditButton.addEventListener('click', resetForm);
+    elements.openModalButton.addEventListener('click', openModal);
+    elements.closeModalButton.addEventListener('click', closeModal);
+    elements.modalBackdrop.addEventListener('click', function (event) {
+      if (event.target === elements.modalBackdrop) {
+        closeModal();
+      }
+    });
+    elements.availabilityForm.addEventListener('submit', handleCreateAvailability);
     elements.testButton.addEventListener('click', function () {
       alert('Aplicação funcionando 🚀');
     });
-
-    elements.rows.addEventListener('click', function (event) {
-      const button = event.target.closest('button[data-action]');
+    elements.availabilityList.addEventListener('click', function (event) {
+      const button = event.target.closest('button[data-interest-id]');
       if (!button) {
         return;
       }
 
-      const id = button.dataset.id;
-      const action = button.dataset.action;
-      const vehicle = vehicles.find(function (item) {
-        return item.id === id;
-      });
-
-      if (!vehicle) {
-        return;
-      }
-
-      if (action === 'edit') {
-        fillForm(vehicle);
-      }
-
-      if (action === 'delete') {
-        removeVehicle(id);
+      showToast('Interesse enviado. Combine direto pelo WhatsApp.');
+    });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        closeModal();
       }
     });
 
-    loadDatabase();
-    render();
+    loadAvailabilities();
+    renderGreeting();
+    renderAvailabilities();
   </script>
 </body>
 </html>
