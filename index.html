@@ -650,14 +650,40 @@
     async function loadData() {
       try {
         const usersRes = await fetch('/api/users');
-        users = await usersRes.json();
+        if (usersRes.ok) {
+          const data = await usersRes.json();
+          if (Array.isArray(data)) {
+            users = data;
+          } else {
+            console.error('Users API did not return an array', data);
+            users = SEEDED_USERS.slice();
+          }
+        } else {
+          const err = await usersRes.json().catch(() => ({}));
+          console.error('Failed to load users:', err);
+          users = SEEDED_USERS.slice();
+          showToast('Erro ao carregar usuários: ' + (err.error || usersRes.statusText));
+        }
 
         const availRes = await fetch('/api/availabilities');
-        availabilities = await availRes.json();
+        if (availRes.ok) {
+          const data = await availRes.json();
+          if (Array.isArray(data)) {
+            availabilities = data;
+          } else {
+            console.error('Availabilities API did not return an array', data);
+            availabilities = [];
+          }
+        } else {
+          const err = await availRes.json().catch(() => ({}));
+          console.error('Failed to load availabilities:', err);
+          availabilities = [];
+        }
       } catch (error) {
-        console.error('Failed to load data:', error);
+        console.error('Failed to load data (network error):', error);
         users = SEEDED_USERS.slice();
         availabilities = [];
+        showToast('Erro de conexão com o servidor.');
       }
     }
 
