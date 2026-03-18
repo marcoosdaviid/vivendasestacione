@@ -610,8 +610,15 @@
           body: JSON.stringify(newUser)
         });
         if (!response.ok) {
-          const err = await response.json();
-          throw new Error(err.error || 'Erro ao salvar usuário');
+          const text = await response.text();
+          let errData;
+          try {
+            errData = JSON.parse(text);
+          } catch (e) {
+            console.error('Non-JSON error response:', text);
+            throw new Error(`Erro do servidor (${response.status}): ${text.slice(0, 100)}`);
+          }
+          throw new Error(errData.error || 'Erro ao salvar usuário');
         }
         users.push(newUser);
       } catch (error) {

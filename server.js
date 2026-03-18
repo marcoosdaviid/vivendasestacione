@@ -5,10 +5,25 @@ const app = express();
 const PORT = 4173;
 
 app.use(express.json());
+
+// Log all requests
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next();
+});
+
 app.use(express.static(__dirname));
 
-const USERS_FILE = path.join(__dirname, 'data', 'users.json');
-const AVAILABILITIES_FILE = path.join(__dirname, 'data', 'availabilities.json');
+const DATA_DIR = path.join(__dirname, 'data');
+if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR);
+}
+
+const USERS_FILE = path.join(DATA_DIR, 'users.json');
+const AVAILABILITIES_FILE = path.join(DATA_DIR, 'availabilities.json');
+
+console.log('Users file:', USERS_FILE);
+console.log('Availabilities file:', AVAILABILITIES_FILE);
 
 // Helper to read JSON file
 const readJSON = (filePath) => {
@@ -51,6 +66,12 @@ app.post('/api/availabilities', (req, res) => {
     const availabilities = req.body;
     writeJSON(AVAILABILITIES_FILE, availabilities);
     res.status(200).json({ message: 'Saved successfully' });
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+    console.error('Server Error:', err);
+    res.status(500).json({ error: 'Erro interno no servidor', details: err.message });
 });
 
 app.listen(PORT, () => {
