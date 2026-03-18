@@ -4,10 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node server.js"
+    "dev": "npx servor . --reload"
   },
-  "dependencies": {
-    "@vercel/kv": "^3.0.0",
-    "express": "^4.21.2"
-  }
+  "dependencies": {}
 }

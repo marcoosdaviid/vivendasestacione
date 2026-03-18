@@ -515,6 +515,9 @@
       }
     ];
 
+    const REMOTE_USERS_URL = 'https://api.npoint.io/470fdcaddf3aecdda0d8';
+    const REMOTE_AVAIL_URL = 'https://api.npoint.io/9761bb13fc3bc4c98375';
+
     let users = [];
     let availabilities = [];
     let currentUserId = null;
@@ -649,41 +652,25 @@
 
     async function loadData() {
       try {
-        const usersRes = await fetch('/api/users');
+        const usersRes = await fetch(REMOTE_USERS_URL);
         if (usersRes.ok) {
           const data = await usersRes.json();
-          if (Array.isArray(data)) {
-            users = data;
-          } else {
-            console.error('Users API did not return an array', data);
-            users = SEEDED_USERS.slice();
-          }
+          users = Array.isArray(data) ? data : SEEDED_USERS.slice();
         } else {
-          const err = await usersRes.json().catch(() => ({}));
-          console.error('Failed to load users:', err);
           users = SEEDED_USERS.slice();
-          showToast('Erro ao carregar usuários: ' + (err.error || usersRes.statusText));
         }
 
-        const availRes = await fetch('/api/availabilities');
+        const availRes = await fetch(REMOTE_AVAIL_URL);
         if (availRes.ok) {
           const data = await availRes.json();
-          if (Array.isArray(data)) {
-            availabilities = data;
-          } else {
-            console.error('Availabilities API did not return an array', data);
-            availabilities = [];
-          }
+          availabilities = Array.isArray(data) ? data : [];
         } else {
-          const err = await availRes.json().catch(() => ({}));
-          console.error('Failed to load availabilities:', err);
           availabilities = [];
         }
       } catch (error) {
-        console.error('Failed to load data (network error):', error);
+        console.error('Failed to load data from cloud:', error);
         users = SEEDED_USERS.slice();
         availabilities = [];
-        showToast('Erro de conexão com o servidor.');
       }
     }
 
