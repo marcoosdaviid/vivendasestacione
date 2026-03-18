@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -380,6 +381,7 @@
     }
   </style>
 </head>
+
 <body>
   <main class="app">
     <section id="authScreen" class="panel auth-card" aria-label="Autenticação">
@@ -423,7 +425,8 @@
         </label>
         <label>
           Senha
-          <input id="signupPassword" name="password" type="password" minlength="4" placeholder="Mínimo 4 caracteres" required />
+          <input id="signupPassword" name="password" type="password" minlength="4" placeholder="Mínimo 4 caracteres"
+            required />
         </label>
         <p id="signupFeedback" class="feedback" aria-live="polite"></p>
         <button class="primary-button" type="submit">Criar conta</button>
@@ -580,7 +583,7 @@
       return dateLabel + ' • ' + startLabel + ' às ' + endLabel;
     }
 
-    function showToast(message) {
+    async function showToast(message) {
       clearTimeout(toastTimer);
       elements.toast.textContent = message;
       elements.toast.classList.add('show');
@@ -599,12 +602,34 @@
       setFeedback(elements.signupFeedback, '', '');
     }
 
-    function saveUsers() {
-      localStorage.setItem(USERS_KEY, JSON.stringify(users));
+    async function saveUsers(newUser) {
+      try {
+        const response = await fetch('/api/users', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newUser)
+        });
+        if (!response.ok) {
+          const err = await response.json();
+          throw new Error(err.error || 'Erro ao salvar usuário');
+        }
+        users.push(newUser);
+      } catch (error) {
+        console.error('Failed to save user:', error);
+        throw error;
+      }
     }
 
-    function saveAvailabilities() {
-      localStorage.setItem(AVAILABILITY_KEY, JSON.stringify(availabilities));
+    async function saveAvailabilities() {
+      try {
+        await fetch('/api/availabilities', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(availabilities)
+        });
+      } catch (error) {
+        console.error('Failed to save availabilities:', error);
+      }
     }
 
     function saveSession() {
@@ -615,24 +640,18 @@
       }
     }
 
-    function ensureSeedUsers() {
-      const raw = localStorage.getItem(USERS_KEY);
-      if (!raw) {
-        users = SEEDED_USERS.slice();
-        saveUsers();
-        return;
-      }
+    async function loadData() {
+      try {
+        const usersRes = await fetch('/api/users');
+        users = await usersRes.json();
 
-      users = JSON.parse(raw);
-      if (users.length < 2) {
+        const availRes = await fetch('/api/availabilities');
+        availabilities = await availRes.json();
+      } catch (error) {
+        console.error('Failed to load data:', error);
         users = SEEDED_USERS.slice();
-        saveUsers();
+        availabilities = [];
       }
-    }
-
-    function loadAvailabilities() {
-      const raw = localStorage.getItem(AVAILABILITY_KEY);
-      availabilities = raw ? JSON.parse(raw) : [];
     }
 
     function loadSession() {
@@ -764,7 +783,7 @@
       showToast('Login realizado com sucesso.');
     }
 
-    function handleSignup(event) {
+    async function handleSignup(event) {
       event.preventDefault();
       const name = elements.signupName.value.trim();
       const apartment = elements.signupApartment.value.trim();
@@ -789,17 +808,20 @@
         password: password
       };
 
-      users.push(newUser);
-      saveUsers();
-      currentUserId = newUser.id;
-      saveSession();
-      elements.signupForm.reset();
-      clearAuthFeedback();
-      renderDashboard();
-      showToast('Conta criada com sucesso.');
+      try {
+        await saveUsers(newUser);
+        currentUserId = newUser.id;
+        saveSession();
+        elements.signupForm.reset();
+        clearAuthFeedback();
+        renderDashboard();
+        showToast('Conta criada com sucesso.');
+      } catch (error) {
+        setFeedback(elements.signupFeedback, error.message, 'error');
+      }
     }
 
-    function handleCreateAvailability(event) {
+    async function handleCreateAvailability(event) {
       event.preventDefault();
       const currentUser = getCurrentUser();
 
@@ -830,7 +852,7 @@
         status: STATUS.AVAILABLE
       });
 
-      saveAvailabilities();
+      await saveAvailabilities();
       closeModal();
       renderDashboard();
       showToast('Vaga liberada com sucesso.');
@@ -882,11 +904,15 @@
       }
     });
 
-    ensureSeedUsers();
-    loadAvailabilities();
-    loadSession();
-    switchAuthMode('login');
-    renderDashboard();
+    async function init() {
+      await loadData();
+      loadSession();
+      switchAuthMode('login');
+      renderDashboard();
+    }
+
+    init();
   </script>
 </body>
+
 </html>

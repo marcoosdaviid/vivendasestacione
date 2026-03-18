@@ -1,0 +1,23 @@
+[
+  {
+    "id": "user-1",
+    "name": "Mariana Costa",
+    "apartment": "Bloco A • 101",
+    "phone": "11999990001",
+    "password": "1234"
+  },
+  {
+    "id": "user-2",
+    "name": "Rafael Lima",
+    "apartment": "Bloco B • 204",
+    "phone": "11999990002",
+    "password": "1234"
+  },
+  {
+    "id": "user-1773798633785-5e0496",
+    "name": "Carlos Teste",
+    "apartment": "Bloco C",
+    "phone": "11911112222",
+    "password": "1234"
+  }
+]
