@@ -607,38 +607,33 @@
 
     async function saveUsers(newUser) {
       try {
-        const response = await fetch('/api/users', {
+        const updatedUsers = [...users, newUser];
+        const response = await fetch(REMOTE_USERS_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(newUser)
+          body: JSON.stringify(updatedUsers)
         });
+
         if (!response.ok) {
-          const text = await response.text();
-          let errData;
-          try {
-            errData = JSON.parse(text);
-          } catch (e) {
-            console.error('Non-JSON error response:', text);
-            throw new Error(`Erro do servidor (${response.status}): ${text.slice(0, 100)}`);
-          }
-          throw new Error(errData.error || 'Erro ao salvar usuário');
+          throw new Error('Erro ao salvar dados na nuvem.');
         }
-        users.push(newUser);
+
+        users = updatedUsers;
       } catch (error) {
-        console.error('Failed to save user:', error);
+        console.error('Cloud save failed:', error);
         throw error;
       }
     }
 
     async function saveAvailabilities() {
       try {
-        await fetch('/api/availabilities', {
+        await fetch(REMOTE_AVAIL_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(availabilities)
         });
       } catch (error) {
-        console.error('Failed to save availabilities:', error);
+        console.error('Cloud save failed:', error);
       }
     }
 
