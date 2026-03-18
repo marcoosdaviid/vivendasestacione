@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CondoPark MVP</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-soft: #f1f5f9;
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #e2e8f0;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --success: #16a34a;
+      --danger: #dc2626;
+      --shadow: 0 20px 44px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(180deg, #eff6ff 0%, var(--bg) 42%, #ffffff 100%);
+      color: var(--text);
+      padding: 18px 16px 32px;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .app {
+      width: min(100%, 440px);
+      margin: 0 auto;
+      display: grid;
+      gap: 16px;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+
+    .brand,
+    .auth-card,
+    .hero,
+    .button-group,
+    .cards,
+    form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .eyebrow {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+
+    h1,
+    h2 {
+      line-height: 1.15;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+    }
+
+    h2 {
+      font-size: 1.05rem;
+    }
+
+    .muted,
+    .helper,
+    .meta,
+    .empty,
+    .storage-note {
+      color: var(--muted);
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: var(--surface-soft);
+      border-radius: 14px;
+      padding: 6px;
+    }
+
+    .tab,
+    .primary-button,
+    .secondary-button,
+    .ghost-button,
+    .link-button,
+    .close-button,
+    .test-button {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+    }
+
+    .tab {
+      background: transparent;
+      color: var(--muted);
+      padding: 10px 12px;
+    }
+
+    .tab.active {
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+    }
+
+    .primary-button {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .primary-button:hover:not(:disabled) {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .secondary-button,
+    .ghost-button,
+    .close-button {
+      background: var(--surface-soft);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .secondary-button:disabled {
+      cursor: not-allowed;
+      opacity: 0.75;
+    }
+
+    .link-button {
+      background: transparent;
+      color: var(--primary);
+      padding: 0;
+      width: auto;
+      text-align: left;
+    }
+
+    .ghost-button:hover:not(:disabled),
+    .close-button:hover:not(:disabled),
+    .test-button:hover:not(:disabled),
+    .link-button:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px 12px;
+      background: #fff;
+      color: var(--text);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .storage-note {
+      font-size: 0.86rem;
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .pill {
+      min-width: 32px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #dbeafe;
+      color: var(--primary);
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      background: var(--surface);
+      display: grid;
+      gap: 10px;
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .tag {
+      background: #dcfce7;
+      color: var(--success);
+      border-radius: 999px;
+      padding: 5px 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .meta {
+      display: grid;
+      gap: 4px;
+      font-size: 0.92rem;
+    }
+
+    .empty {
+      text-align: center;
+      font-size: 0.94rem;
+      padding: 18px 10px 6px;
+    }
+
+    .feedback {
+      min-height: 18px;
+      font-size: 0.86rem;
+    }
+
+    .feedback.error {
+      color: var(--danger);
+    }
+
+    .feedback.success {
+      color: var(--success);
+    }
+
+    .test-button {
+      background: transparent;
+      color: var(--primary);
+      border: 1px dashed #93c5fd;
+      font-size: 0.92rem;
+      padding: 12px 14px;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.45);
+      display: none;
+      align-items: end;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      width: min(100%, 440px);
+      background: var(--surface);
+      border-radius: 22px 22px 18px 18px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 14px;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .close-button {
+      width: auto;
+      padding: 8px 10px;
+      border-radius: 12px;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%) translateY(18px);
+      width: min(calc(100% - 32px), 420px);
+      background: #0f172a;
+      color: #fff;
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 0.92rem;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (min-width: 720px) {
+      body {
+        padding-top: 32px;
+      }
+
+      .app {
+        width: min(100%, 760px);
+      }
+
+      .button-group,
+      .cards {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .modal-backdrop {
+        align-items: center;
+      }
+
+      .modal {
+        border-radius: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section id="authScreen" class="panel auth-card" aria-label="Autenticação">
+      <div class="brand">
+        <p class="eyebrow">CondoPark MVP</p>
+        <h1>Descubra vagas sem pedir no WhatsApp</h1>
+        <p class="muted">Entre com sua conta ou crie um cadastro simples para começar.</p>
+      </div>
+
+      <p id="storageNote" class="storage-note">Carregando configuração de segurança…</p>
+
+      <div class="tabs" aria-label="Alternar entre login e cadastro">
+        <button id="loginTab" class="tab active" type="button">Entrar</button>
+        <button id="signupTab" class="tab" type="button">Criar conta</button>
+      </div>
+
+      <form id="loginForm">
+        <label>Telefone<input id="loginPhone" type="tel" placeholder="11999990001" required /></label>
+        <label>Senha<input id="loginPassword" type="password" minlength="4" placeholder="••••" required /></label>
+        <p id="loginFeedback" class="feedback" aria-live="polite"></p>
+        <button class="primary-button" type="submit">Entrar</button>
+        <button id="switchToSignupLink" class="link-button" type="button">Criar conta</button>
+      </form>
+
+      <form id="signupForm" class="hidden">
+        <label>Nome<input id="signupName" type="text" placeholder="Mariana Costa" required /></label>
+        <label>Apartamento<input id="signupApartment" type="text" placeholder="Bloco A • 101" required /></label>
+        <label>Telefone<input id="signupPhone" type="tel" placeholder="11999990004" required /></label>
+        <label>Senha<input id="signupPassword" type="password" minlength="4" placeholder="Mínimo 4 caracteres" required /></label>
+        <p id="signupFeedback" class="feedback" aria-live="polite"></p>
+        <button class="primary-button" type="submit">Criar conta</button>
+      </form>
+    </section>
+
+    <section id="dashboardScreen" class="hidden">
+      <section class="panel hero" aria-label="Dashboard">
+        <div class="brand">
+          <p class="eyebrow">CondoPark MVP</p>
+          <h1 id="greeting">Olá!</h1>
+          <p class="muted">Confira vagas liberadas por outros moradores do condomínio.</p>
+        </div>
+
+        <div class="button-group">
+          <button id="openModalButton" class="primary-button" type="button">Liberar minha vaga</button>
+          <button class="secondary-button" type="button" disabled>Preciso de vaga</button>
+        </div>
+
+        <button id="logoutButton" class="ghost-button" type="button">Sair</button>
+        <button id="testButton" class="test-button" type="button">Clique para testar</button>
+      </section>
+
+      <section class="panel" aria-label="Lista de vagas disponíveis">
+        <div class="section-header">
+          <h2>Vagas disponíveis</h2>
+          <span id="availabilityCount" class="pill">0</span>
+        </div>
+        <div id="availabilityList" class="cards"></div>
+        <p id="emptyState" class="empty">Nenhuma vaga disponível agora para você.</p>
+      </section>
+    </section>
+  </main>
+
+  <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <section class="modal">
+      <div class="modal-header">
+        <div>
+          <h2 id="modalTitle">Liberar minha vaga</h2>
+          <p class="helper">Defina o período em que sua vaga ficará disponível.</p>
+        </div>
+        <button id="closeModalButton" class="close-button" type="button" aria-label="Fechar modal">Fechar</button>
+      </div>
+
+      <form id="availabilityForm">
+        <label>Início<input id="startTime" type="datetime-local" required /></label>
+        <label>Fim<input id="endTime" type="datetime-local" required /></label>
+        <p id="availabilityFeedback" class="feedback error" aria-live="polite"></p>
+        <button class="primary-button" type="submit">Publicar vaga</button>
+      </form>
+    </section>
+  </div>
+
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <script>
+    let sessionStorageKey = 'condopark_session_user';
+    let currentUser = null;
+    let toastTimer = null;
+
+    const elements = {
+      authScreen: document.getElementById('authScreen'),
+      dashboardScreen: document.getElementById('dashboardScreen'),
+      storageNote: document.getElementById('storageNote'),
+      loginTab: document.getElementById('loginTab'),
+      signupTab: document.getElementById('signupTab'),
+      loginForm: document.getElementById('loginForm'),
+      signupForm: document.getElementById('signupForm'),
+      loginPhone: document.getElementById('loginPhone'),
+      loginPassword: document.getElementById('loginPassword'),
+      signupName: document.getElementById('signupName'),
+      signupApartment: document.getElementById('signupApartment'),
+      signupPhone: document.getElementById('signupPhone'),
+      signupPassword: document.getElementById('signupPassword'),
+      loginFeedback: document.getElementById('loginFeedback'),
+      signupFeedback: document.getElementById('signupFeedback'),
+      switchToSignupLink: document.getElementById('switchToSignupLink'),
+      greeting: document.getElementById('greeting'),
+      openModalButton: document.getElementById('openModalButton'),
+      closeModalButton: document.getElementById('closeModalButton'),
+      logoutButton: document.getElementById('logoutButton'),
+      testButton: document.getElementById('testButton'),
+      modalBackdrop: document.getElementById('modalBackdrop'),
+      availabilityForm: document.getElementById('availabilityForm'),
+      startTime: document.getElementById('startTime'),
+      endTime: document.getElementById('endTime'),
+      availabilityFeedback: document.getElementById('availabilityFeedback'),
+      availabilityList: document.getElementById('availabilityList'),
+      availabilityCount: document.getElementById('availabilityCount'),
+      emptyState: document.getElementById('emptyState'),
+      toast: document.getElementById('toast')
+    };
+
+    function normalizePhone(phone) {
+      return String(phone || '').replace(/\D/g, '');
+    }
+
+    function toInputValue(date) {
+      const offset = date.getTimezoneOffset() * 60000;
+      return new Date(date.getTime() - offset).toISOString().slice(0, 16);
+    }
+
+    function formatRange(startTime, endTime) {
+      const start = new Date(startTime);
+      const end = new Date(endTime);
+      return start.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }) +
+        ' • ' +
+        start.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) +
+        ' às ' +
+        end.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function setFeedback(element, message, type) {
+      element.textContent = message;
+      element.className = 'feedback' + (type ? ' ' + type : '');
+    }
+
+    function showToast(message) {
+      clearTimeout(toastTimer);
+      elements.toast.textContent = message;
+      elements.toast.classList.add('show');
+      toastTimer = setTimeout(function () {
+        elements.toast.classList.remove('show');
+      }, 2600);
+    }
+
+    function switchAuthMode(mode) {
+      const isLogin = mode === 'login';
+      elements.loginTab.classList.toggle('active', isLogin);
+      elements.signupTab.classList.toggle('active', !isLogin);
+      elements.loginForm.classList.toggle('hidden', !isLogin);
+      elements.signupForm.classList.toggle('hidden', isLogin);
+      setFeedback(elements.loginFeedback, '', '');
+      setFeedback(elements.signupFeedback, '', '');
+    }
+
+    function saveSession() {
+      if (currentUser) {
+        localStorage.setItem(sessionStorageKey, JSON.stringify(currentUser));
+      } else {
+        localStorage.removeItem(sessionStorageKey);
+      }
+    }
+
+    async function loadConfig() {
+      const response = await fetch('/api/config');
+      const data = await response.json();
+      sessionStorageKey = data.sessionStorageKey;
+      elements.storageNote.textContent = 'Usuários gravados em ' + data.storage.usersFile + ' com ' + data.storage.algorithm.toUpperCase() + '.';
+      const storedSession = localStorage.getItem(sessionStorageKey);
+      currentUser = storedSession ? JSON.parse(storedSession) : null;
+    }
+
+    async function loadAvailabilities() {
+      const response = await fetch('/api/availabilities');
+      const data = await response.json();
+
+      const items = data.availabilities
+        .filter(function (availability) {
+          return availability.status === 'AVAILABLE' && availability.owner && (!currentUser || availability.ownerId !== currentUser.id);
+        })
+        .sort(function (first, second) {
+          return new Date(first.endTime).getTime() - new Date(second.endTime).getTime();
+        });
+
+      elements.availabilityList.innerHTML = '';
+      elements.availabilityCount.textContent = String(items.length);
+      elements.emptyState.style.display = items.length === 0 ? 'block' : 'none';
+
+      items.forEach(function (availability) {
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.innerHTML = [
+          '<div class="card-title">',
+          '  <strong>' + availability.owner.name + '</strong>',
+          '  <span class="tag">Disponível</span>',
+          '</div>',
+          '<div class="meta">',
+          '  <span>' + availability.owner.apartment + '</span>',
+          '  <span>' + formatRange(availability.startTime, availability.endTime) + '</span>',
+          '</div>',
+          '<button class="primary-button" type="button" data-interest-id="' + availability.id + '">Tenho interesse</button>'
+        ].join('');
+        elements.availabilityList.appendChild(card);
+      });
+    }
+
+    async function renderApp() {
+      if (!currentUser) {
+        elements.authScreen.classList.remove('hidden');
+        elements.dashboardScreen.classList.add('hidden');
+        await loadAvailabilities();
+        return;
+      }
+
+      elements.authScreen.classList.add('hidden');
+      elements.dashboardScreen.classList.remove('hidden');
+      elements.greeting.textContent = 'Olá, ' + currentUser.name + '!';
+      await loadAvailabilities();
+    }
+
+    function setDefaultTimes() {
+      const now = new Date();
+      const end = new Date(now.getTime() + 4 * 60 * 60 * 1000);
+      elements.startTime.value = toInputValue(now);
+      elements.endTime.value = toInputValue(end);
+      setFeedback(elements.availabilityFeedback, '', 'error');
+    }
+
+    function openModal() {
+      setDefaultTimes();
+      elements.modalBackdrop.classList.add('open');
+    }
+
+    function closeModal() {
+      elements.modalBackdrop.classList.remove('open');
+      setFeedback(elements.availabilityFeedback, '', 'error');
+    }
+
+    async function handleLogin(event) {
+      event.preventDefault();
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          phone: normalizePhone(elements.loginPhone.value.trim()),
+          password: elements.loginPassword.value
+        })
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        setFeedback(elements.loginFeedback, data.message, 'error');
+        return;
+      }
+
+      currentUser = data.user;
+      saveSession();
+      elements.loginForm.reset();
+      setFeedback(elements.loginFeedback, '', '');
+      await renderApp();
+      showToast('Login realizado com sucesso.');
+    }
+
+    async function handleSignup(event) {
+      event.preventDefault();
+      const response = await fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: elements.signupName.value.trim(),
+          apartment: elements.signupApartment.value.trim(),
+          phone: normalizePhone(elements.signupPhone.value.trim()),
+          password: elements.signupPassword.value
+        })
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        setFeedback(elements.signupFeedback, data.message, 'error');
+        return;
+      }
+
+      currentUser = data.user;
+      saveSession();
+      elements.signupForm.reset();
+      setFeedback(elements.signupFeedback, '', '');
+      await renderApp();
+      showToast('Conta criada com sucesso.');
+    }
+
+    async function handleCreateAvailability(event) {
+      event.preventDefault();
+      const response = await fetch('/api/availabilities', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ownerId: currentUser.id,
+          startTime: elements.startTime.value,
+          endTime: elements.endTime.value
+        })
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        setFeedback(elements.availabilityFeedback, data.message, 'error');
+        return;
+      }
+
+      closeModal();
+      await renderApp();
+      showToast('Vaga liberada com sucesso.');
+    }
+
+    async function handleLogout() {
+      currentUser = null;
+      saveSession();
+      switchAuthMode('login');
+      closeModal();
+      await renderApp();
+      showToast('Você saiu da conta.');
+    }
+
+    elements.loginTab.addEventListener('click', function () { switchAuthMode('login'); });
+    elements.signupTab.addEventListener('click', function () { switchAuthMode('signup'); });
+    elements.switchToSignupLink.addEventListener('click', function () { switchAuthMode('signup'); });
+    elements.loginForm.addEventListener('submit', handleLogin);
+    elements.signupForm.addEventListener('submit', handleSignup);
+    elements.openModalButton.addEventListener('click', openModal);
+    elements.closeModalButton.addEventListener('click', closeModal);
+    elements.logoutButton.addEventListener('click', handleLogout);
+    elements.testButton.addEventListener('click', function () { alert('Aplicação funcionando 🚀'); });
+    elements.modalBackdrop.addEventListener('click', function (event) {
+      if (event.target === elements.modalBackdrop) {
+        closeModal();
+      }
+    });
+    elements.availabilityForm.addEventListener('submit', handleCreateAvailability);
+    elements.availabilityList.addEventListener('click', function (event) {
+      const button = event.target.closest('button[data-interest-id]');
+      if (!button) {
+        return;
+      }
+      showToast('Interesse enviado. Combine direto pelo WhatsApp.');
+    });
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        closeModal();
+      }
+    });
+
+    loadConfig().then(function () {
+      switchAuthMode('login');
+      renderApp();
+    });
+  </script>
+</body>
+</html>
