@@ -9,14 +9,15 @@
       color-scheme: light;
       --bg: #f8fafc;
       --surface: #ffffff;
-      --surface-alt: #f1f5f9;
+      --surface-soft: #f1f5f9;
       --text: #0f172a;
       --muted: #64748b;
       --border: #e2e8f0;
       --primary: #2563eb;
       --primary-hover: #1d4ed8;
       --success: #16a34a;
-      --shadow: 0 18px 44px rgba(15, 23, 42, 0.1);
+      --danger: #dc2626;
+      --shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
     }
 
     * {
@@ -28,13 +29,18 @@
 
     body {
       min-height: 100vh;
-      background: linear-gradient(180deg, #eff6ff 0%, var(--bg) 45%, #ffffff 100%);
+      background: linear-gradient(180deg, #eff6ff 0%, var(--bg) 42%, #ffffff 100%);
       color: var(--text);
-      padding: 20px 16px 32px;
+      padding: 18px 16px 32px;
+    }
+
+    button,
+    input {
+      font: inherit;
     }
 
     .app {
-      width: min(100%, 480px);
+      width: min(100%, 440px);
       margin: 0 auto;
       display: grid;
       gap: 16px;
@@ -48,9 +54,14 @@
       padding: 20px;
     }
 
-    .hero {
+    .stack {
       display: grid;
       gap: 14px;
+    }
+
+    .brand {
+      display: grid;
+      gap: 8px;
     }
 
     .eyebrow {
@@ -61,25 +72,84 @@
       color: var(--primary);
     }
 
-    h1 {
-      font-size: 1.75rem;
+    h1,
+    h2 {
       line-height: 1.15;
     }
 
-    .subtitle,
+    h1 {
+      font-size: 1.8rem;
+    }
+
+    h2 {
+      font-size: 1.05rem;
+    }
+
+    p,
+    .muted,
     .helper,
-    .empty,
-    .meta,
-    .toast {
+    .meta {
       color: var(--muted);
     }
 
-    .button-group {
+    .tabs {
       display: grid;
-      gap: 10px;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: var(--surface-soft);
+      border-radius: 14px;
+      padding: 6px;
     }
 
-    button {
+    .tab {
+      border: none;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--muted);
+      padding: 10px 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+    }
+
+    .auth-card {
+      display: grid;
+      gap: 16px;
+    }
+
+    .auth-form,
+    .modal form {
+      display: grid;
+      gap: 12px;
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px 12px;
+      background: #fff;
+      color: var(--text);
+    }
+
+    .primary-button,
+    .secondary-button,
+    .ghost-button,
+    .link-button,
+    .close-button,
+    .test-button {
       width: 100%;
       border: none;
       border-radius: 14px;
@@ -90,21 +160,28 @@
       transition: transform 0.15s ease, background 0.15s ease, opacity 0.15s ease;
     }
 
-    button:hover:not(:disabled) {
+    .primary-button:hover:not(:disabled),
+    .secondary-button:hover:not(:disabled),
+    .ghost-button:hover:not(:disabled),
+    .link-button:hover:not(:disabled),
+    .close-button:hover:not(:disabled),
+    .test-button:hover:not(:disabled) {
       transform: translateY(-1px);
     }
 
     .primary-button {
       background: var(--primary);
-      color: #ffffff;
+      color: #fff;
     }
 
     .primary-button:hover:not(:disabled) {
       background: var(--primary-hover);
     }
 
-    .secondary-button {
-      background: var(--surface-alt);
+    .secondary-button,
+    .ghost-button,
+    .close-button {
+      background: var(--surface-soft);
       color: var(--muted);
       border: 1px solid var(--border);
     }
@@ -112,6 +189,29 @@
     .secondary-button:disabled {
       cursor: not-allowed;
       opacity: 0.75;
+    }
+
+    .link-button {
+      background: transparent;
+      color: var(--primary);
+      padding: 0;
+      width: auto;
+      text-align: left;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .hero {
+      display: grid;
+      gap: 14px;
+    }
+
+    .button-group,
+    .cards {
+      display: grid;
+      gap: 12px;
     }
 
     .section-header {
@@ -122,14 +222,7 @@
       margin-bottom: 14px;
     }
 
-    .section-header h2 {
-      font-size: 1.05rem;
-    }
-
     .pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
       min-width: 32px;
       padding: 6px 10px;
       border-radius: 999px;
@@ -137,11 +230,7 @@
       color: var(--primary);
       font-size: 0.82rem;
       font-weight: 700;
-    }
-
-    .cards {
-      display: grid;
-      gap: 12px;
+      text-align: center;
     }
 
     .card {
@@ -171,6 +260,7 @@
       padding: 5px 10px;
       font-size: 0.75rem;
       font-weight: 700;
+      white-space: nowrap;
     }
 
     .meta {
@@ -181,6 +271,7 @@
 
     .empty {
       text-align: center;
+      color: var(--muted);
       font-size: 0.94rem;
       padding: 18px 10px 6px;
     }
@@ -191,6 +282,19 @@
       border: 1px dashed #93c5fd;
       font-size: 0.92rem;
       padding: 12px 14px;
+    }
+
+    .feedback {
+      min-height: 18px;
+      font-size: 0.86rem;
+    }
+
+    .feedback.error {
+      color: var(--danger);
+    }
+
+    .feedback.success {
+      color: var(--success);
     }
 
     .modal-backdrop {
@@ -208,7 +312,7 @@
     }
 
     .modal {
-      width: min(100%, 480px);
+      width: min(100%, 440px);
       background: var(--surface);
       border-radius: 22px 22px 18px 18px;
       padding: 20px;
@@ -227,38 +331,7 @@
     .close-button {
       width: auto;
       padding: 8px 10px;
-      background: var(--surface-alt);
-      color: var(--muted);
-      border: 1px solid var(--border);
       border-radius: 12px;
-    }
-
-    form {
-      display: grid;
-      gap: 12px;
-    }
-
-    label {
-      display: grid;
-      gap: 6px;
-      font-size: 0.92rem;
-      font-weight: 600;
-    }
-
-    input[type="datetime-local"] {
-      width: 100%;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 13px 12px;
-      font-size: 1rem;
-      color: var(--text);
-      background: #fff;
-    }
-
-    .error {
-      min-height: 18px;
-      color: #dc2626;
-      font-size: 0.85rem;
     }
 
     .toast {
@@ -268,7 +341,7 @@
       transform: translateX(-50%) translateY(18px);
       width: min(calc(100% - 32px), 420px);
       background: #0f172a;
-      color: #ffffff;
+      color: #fff;
       border-radius: 14px;
       padding: 14px 16px;
       font-size: 0.92rem;
@@ -292,10 +365,7 @@
         width: min(100%, 760px);
       }
 
-      .button-group {
-        grid-template-columns: 1fr 1fr;
-      }
-
+      .button-group,
       .cards {
         grid-template-columns: 1fr 1fr;
       }
@@ -312,26 +382,79 @@
 </head>
 <body>
   <main class="app">
-    <section class="panel hero" aria-label="Dashboard">
-      <div>
+    <section id="authScreen" class="panel auth-card" aria-label="Autenticação">
+      <div class="brand">
         <p class="eyebrow">CondoPark MVP</p>
-        <h1 id="greeting">Olá!</h1>
+        <h1>Descubra vagas sem pedir no WhatsApp</h1>
+        <p class="muted">Entre com sua conta ou crie um cadastro simples para começar.</p>
       </div>
-      <p class="subtitle">Descubra vagas disponíveis no condomínio sem depender do grupo de WhatsApp.</p>
-      <div class="button-group">
-        <button id="openModalButton" class="primary-button" type="button">Liberar minha vaga</button>
-        <button class="secondary-button" type="button" disabled>Preciso de vaga</button>
+
+      <div class="tabs" aria-label="Alternar entre login e cadastro">
+        <button id="loginTab" class="tab active" type="button">Entrar</button>
+        <button id="signupTab" class="tab" type="button">Criar conta</button>
       </div>
-      <button id="testButton" class="test-button" type="button">Clique para testar</button>
+
+      <form id="loginForm" class="auth-form">
+        <label>
+          Telefone
+          <input id="loginPhone" name="phone" type="tel" placeholder="11999990001" required />
+        </label>
+        <label>
+          Senha
+          <input id="loginPassword" name="password" type="password" minlength="4" placeholder="••••" required />
+        </label>
+        <p id="loginFeedback" class="feedback" aria-live="polite"></p>
+        <button class="primary-button" type="submit">Entrar</button>
+        <button id="switchToSignupLink" class="link-button" type="button">Criar conta</button>
+      </form>
+
+      <form id="signupForm" class="auth-form hidden">
+        <label>
+          Nome
+          <input id="signupName" name="name" type="text" placeholder="Mariana Costa" required />
+        </label>
+        <label>
+          Apartamento
+          <input id="signupApartment" name="apartment" type="text" placeholder="Bloco A • 101" required />
+        </label>
+        <label>
+          Telefone
+          <input id="signupPhone" name="phone" type="tel" placeholder="11999990004" required />
+        </label>
+        <label>
+          Senha
+          <input id="signupPassword" name="password" type="password" minlength="4" placeholder="Mínimo 4 caracteres" required />
+        </label>
+        <p id="signupFeedback" class="feedback" aria-live="polite"></p>
+        <button class="primary-button" type="submit">Criar conta</button>
+      </form>
     </section>
 
-    <section class="panel" aria-label="Lista de vagas disponíveis">
-      <div class="section-header">
-        <h2>Vagas disponíveis</h2>
-        <span id="availabilityCount" class="pill">0</span>
-      </div>
-      <div id="availabilityList" class="cards"></div>
-      <p id="emptyState" class="empty">Nenhuma vaga disponível no momento.</p>
+    <section id="dashboardScreen" class="hidden">
+      <section class="panel hero" aria-label="Dashboard">
+        <div class="brand">
+          <p class="eyebrow">CondoPark MVP</p>
+          <h1 id="greeting">Olá!</h1>
+          <p class="muted">Confira vagas liberadas por outros moradores do condomínio.</p>
+        </div>
+
+        <div class="button-group">
+          <button id="openModalButton" class="primary-button" type="button">Liberar minha vaga</button>
+          <button class="secondary-button" type="button" disabled>Preciso de vaga</button>
+        </div>
+
+        <button id="logoutButton" class="ghost-button" type="button">Sair</button>
+        <button id="testButton" class="test-button" type="button">Clique para testar</button>
+      </section>
+
+      <section class="panel" aria-label="Lista de vagas disponíveis">
+        <div class="section-header">
+          <h2>Vagas disponíveis</h2>
+          <span id="availabilityCount" class="pill">0</span>
+        </div>
+        <div id="availabilityList" class="cards"></div>
+        <p id="emptyState" class="empty">Nenhuma vaga disponível agora para você.</p>
+      </section>
     </section>
   </main>
 
@@ -356,8 +479,7 @@
           <input id="endTime" name="endTime" type="datetime-local" required />
         </label>
 
-        <p id="formError" class="error" aria-live="polite"></p>
-
+        <p id="availabilityFeedback" class="feedback error" aria-live="polite"></p>
         <button class="primary-button" type="submit">Publicar vaga</button>
       </form>
     </section>
@@ -366,73 +488,78 @@
   <div id="toast" class="toast" aria-live="polite"></div>
 
   <script>
-    const USERS = [
-      { id: 'user-1', name: 'Mariana Costa', apartment: 'Bloco A • 101', phone: '11999990001' },
-      { id: 'user-2', name: 'Rafael Lima', apartment: 'Bloco B • 204', phone: '11999990002' },
-      { id: 'user-3', name: 'Patrícia Souza', apartment: 'Torre 2 • 307', phone: '11999990003' }
-    ];
-
-    const CURRENT_USER_ID = USERS[0].id;
+    const USERS_KEY = 'condopark_users';
+    const SESSION_KEY = 'condopark_session_user';
     const AVAILABILITY_KEY = 'condopark_availabilities';
     const STATUS = {
       AVAILABLE: 'AVAILABLE',
       FINISHED: 'FINISHED'
     };
+    const SEEDED_USERS = [
+      {
+        id: 'user-1',
+        name: 'Mariana Costa',
+        apartment: 'Bloco A • 101',
+        phone: '11999990001',
+        password: '1234'
+      },
+      {
+        id: 'user-2',
+        name: 'Rafael Lima',
+        apartment: 'Bloco B • 204',
+        phone: '11999990002',
+        password: '1234'
+      }
+    ];
 
+    let users = [];
     let availabilities = [];
+    let currentUserId = null;
     let toastTimer = null;
 
     const elements = {
+      authScreen: document.getElementById('authScreen'),
+      dashboardScreen: document.getElementById('dashboardScreen'),
+      loginTab: document.getElementById('loginTab'),
+      signupTab: document.getElementById('signupTab'),
+      loginForm: document.getElementById('loginForm'),
+      signupForm: document.getElementById('signupForm'),
+      loginPhone: document.getElementById('loginPhone'),
+      loginPassword: document.getElementById('loginPassword'),
+      signupName: document.getElementById('signupName'),
+      signupApartment: document.getElementById('signupApartment'),
+      signupPhone: document.getElementById('signupPhone'),
+      signupPassword: document.getElementById('signupPassword'),
+      loginFeedback: document.getElementById('loginFeedback'),
+      signupFeedback: document.getElementById('signupFeedback'),
+      switchToSignupLink: document.getElementById('switchToSignupLink'),
       greeting: document.getElementById('greeting'),
       openModalButton: document.getElementById('openModalButton'),
       closeModalButton: document.getElementById('closeModalButton'),
+      logoutButton: document.getElementById('logoutButton'),
+      testButton: document.getElementById('testButton'),
       modalBackdrop: document.getElementById('modalBackdrop'),
       availabilityForm: document.getElementById('availabilityForm'),
       startTime: document.getElementById('startTime'),
       endTime: document.getElementById('endTime'),
-      formError: document.getElementById('formError'),
+      availabilityFeedback: document.getElementById('availabilityFeedback'),
       availabilityList: document.getElementById('availabilityList'),
       availabilityCount: document.getElementById('availabilityCount'),
       emptyState: document.getElementById('emptyState'),
-      toast: document.getElementById('toast'),
-      testButton: document.getElementById('testButton')
+      toast: document.getElementById('toast')
     };
 
-    function getCurrentUser() {
-      return USERS.find(function (user) {
-        return user.id === CURRENT_USER_ID;
-      });
+    function normalizePhone(phone) {
+      return phone.replace(/\D/g, '');
+    }
+
+    function generateId(prefix) {
+      return prefix + '-' + Date.now() + '-' + Math.random().toString(16).slice(2, 8);
     }
 
     function toInputValue(date) {
       const timezoneOffset = date.getTimezoneOffset() * 60000;
       return new Date(date.getTime() - timezoneOffset).toISOString().slice(0, 16);
-    }
-
-    function setDefaultTimes() {
-      const now = new Date();
-      const end = new Date(now.getTime() + 4 * 60 * 60 * 1000);
-      elements.startTime.value = toInputValue(now);
-      elements.endTime.value = toInputValue(end);
-      elements.formError.textContent = '';
-    }
-
-    function loadAvailabilities() {
-      const raw = localStorage.getItem(AVAILABILITY_KEY);
-      availabilities = raw ? JSON.parse(raw) : [];
-    }
-
-    function saveAvailabilities() {
-      localStorage.setItem(AVAILABILITY_KEY, JSON.stringify(availabilities));
-    }
-
-    function showToast(message) {
-      clearTimeout(toastTimer);
-      elements.toast.textContent = message;
-      elements.toast.classList.add('show');
-      toastTimer = setTimeout(function () {
-        elements.toast.classList.remove('show');
-      }, 2600);
     }
 
     function formatRange(startTime, endTime) {
@@ -453,6 +580,80 @@
       return dateLabel + ' • ' + startLabel + ' às ' + endLabel;
     }
 
+    function showToast(message) {
+      clearTimeout(toastTimer);
+      elements.toast.textContent = message;
+      elements.toast.classList.add('show');
+      toastTimer = setTimeout(function () {
+        elements.toast.classList.remove('show');
+      }, 2600);
+    }
+
+    function setFeedback(element, message, type) {
+      element.textContent = message;
+      element.className = 'feedback' + (type ? ' ' + type : '');
+    }
+
+    function clearAuthFeedback() {
+      setFeedback(elements.loginFeedback, '', '');
+      setFeedback(elements.signupFeedback, '', '');
+    }
+
+    function saveUsers() {
+      localStorage.setItem(USERS_KEY, JSON.stringify(users));
+    }
+
+    function saveAvailabilities() {
+      localStorage.setItem(AVAILABILITY_KEY, JSON.stringify(availabilities));
+    }
+
+    function saveSession() {
+      if (currentUserId) {
+        localStorage.setItem(SESSION_KEY, currentUserId);
+      } else {
+        localStorage.removeItem(SESSION_KEY);
+      }
+    }
+
+    function ensureSeedUsers() {
+      const raw = localStorage.getItem(USERS_KEY);
+      if (!raw) {
+        users = SEEDED_USERS.slice();
+        saveUsers();
+        return;
+      }
+
+      users = JSON.parse(raw);
+      if (users.length < 2) {
+        users = SEEDED_USERS.slice();
+        saveUsers();
+      }
+    }
+
+    function loadAvailabilities() {
+      const raw = localStorage.getItem(AVAILABILITY_KEY);
+      availabilities = raw ? JSON.parse(raw) : [];
+    }
+
+    function loadSession() {
+      currentUserId = localStorage.getItem(SESSION_KEY);
+    }
+
+    function getCurrentUser() {
+      return users.find(function (user) {
+        return user.id === currentUserId;
+      }) || null;
+    }
+
+    function switchAuthMode(mode) {
+      const isLogin = mode === 'login';
+      elements.loginTab.classList.toggle('active', isLogin);
+      elements.signupTab.classList.toggle('active', !isLogin);
+      elements.loginForm.classList.toggle('hidden', !isLogin);
+      elements.signupForm.classList.toggle('hidden', isLogin);
+      clearAuthFeedback();
+    }
+
     function syncStatuses() {
       const now = Date.now();
       let changed = false;
@@ -470,30 +671,36 @@
       }
     }
 
-    function getAvailableSpots() {
+    function getVisibleAvailabilities() {
+      syncStatuses();
       return availabilities
         .filter(function (availability) {
-          return availability.status === STATUS.AVAILABLE;
+          return availability.status === STATUS.AVAILABLE && availability.ownerId !== currentUserId;
         })
         .sort(function (first, second) {
           return new Date(first.endTime).getTime() - new Date(second.endTime).getTime();
         });
     }
 
-    function renderGreeting() {
+    function renderDashboard() {
       const currentUser = getCurrentUser();
-      elements.greeting.textContent = 'Olá, ' + currentUser.name.split(' ')[0] + '!';
-    }
+      if (!currentUser) {
+        elements.authScreen.classList.remove('hidden');
+        elements.dashboardScreen.classList.add('hidden');
+        return;
+      }
 
-    function renderAvailabilities() {
-      syncStatuses();
-      const availableSpots = getAvailableSpots();
+      elements.authScreen.classList.add('hidden');
+      elements.dashboardScreen.classList.remove('hidden');
+      elements.greeting.textContent = 'Olá, ' + currentUser.name + '!';
+
+      const visibleAvailabilities = getVisibleAvailabilities();
       elements.availabilityList.innerHTML = '';
-      elements.availabilityCount.textContent = String(availableSpots.length);
-      elements.emptyState.style.display = availableSpots.length === 0 ? 'block' : 'none';
+      elements.availabilityCount.textContent = String(visibleAvailabilities.length);
+      elements.emptyState.style.display = visibleAvailabilities.length === 0 ? 'block' : 'none';
 
-      availableSpots.forEach(function (availability) {
-        const owner = USERS.find(function (user) {
+      visibleAvailabilities.forEach(function (availability) {
+        const owner = users.find(function (user) {
           return user.id === availability.ownerId;
         });
 
@@ -518,6 +725,14 @@
       });
     }
 
+    function setDefaultTimes() {
+      const now = new Date();
+      const end = new Date(now.getTime() + 4 * 60 * 60 * 1000);
+      elements.startTime.value = toInputValue(now);
+      elements.endTime.value = toInputValue(end);
+      setFeedback(elements.availabilityFeedback, '', 'error');
+    }
+
     function openModal() {
       setDefaultTimes();
       elements.modalBackdrop.classList.add('open');
@@ -525,50 +740,134 @@
 
     function closeModal() {
       elements.modalBackdrop.classList.remove('open');
-      elements.formError.textContent = '';
+      setFeedback(elements.availabilityFeedback, '', 'error');
+    }
+
+    function handleLogin(event) {
+      event.preventDefault();
+      const phone = normalizePhone(elements.loginPhone.value.trim());
+      const password = elements.loginPassword.value;
+      const user = users.find(function (item) {
+        return item.phone === phone && item.password === password;
+      });
+
+      if (!user) {
+        setFeedback(elements.loginFeedback, 'Telefone ou senha inválidos.', 'error');
+        return;
+      }
+
+      currentUserId = user.id;
+      saveSession();
+      elements.loginForm.reset();
+      clearAuthFeedback();
+      renderDashboard();
+      showToast('Login realizado com sucesso.');
+    }
+
+    function handleSignup(event) {
+      event.preventDefault();
+      const name = elements.signupName.value.trim();
+      const apartment = elements.signupApartment.value.trim();
+      const phone = normalizePhone(elements.signupPhone.value.trim());
+      const password = elements.signupPassword.value;
+
+      if (password.length < 4) {
+        setFeedback(elements.signupFeedback, 'A senha deve ter pelo menos 4 caracteres.', 'error');
+        return;
+      }
+
+      if (users.some(function (user) { return user.phone === phone; })) {
+        setFeedback(elements.signupFeedback, 'Esse telefone já está cadastrado.', 'error');
+        return;
+      }
+
+      const newUser = {
+        id: generateId('user'),
+        name: name,
+        apartment: apartment,
+        phone: phone,
+        password: password
+      };
+
+      users.push(newUser);
+      saveUsers();
+      currentUserId = newUser.id;
+      saveSession();
+      elements.signupForm.reset();
+      clearAuthFeedback();
+      renderDashboard();
+      showToast('Conta criada com sucesso.');
     }
 
     function handleCreateAvailability(event) {
       event.preventDefault();
+      const currentUser = getCurrentUser();
+
+      if (!currentUser) {
+        closeModal();
+        renderDashboard();
+        return;
+      }
 
       const startTime = elements.startTime.value;
       const endTime = elements.endTime.value;
 
       if (!startTime || !endTime) {
-        elements.formError.textContent = 'Preencha início e fim.';
+        setFeedback(elements.availabilityFeedback, 'Preencha início e fim.', 'error');
         return;
       }
 
       if (new Date(startTime).getTime() >= new Date(endTime).getTime()) {
-        elements.formError.textContent = 'O início precisa ser menor que o fim.';
+        setFeedback(elements.availabilityFeedback, 'O início precisa ser menor que o fim.', 'error');
         return;
       }
 
       availabilities.push({
-        id: 'availability-' + Date.now(),
-        ownerId: CURRENT_USER_ID,
+        id: generateId('availability'),
+        ownerId: currentUser.id,
         startTime: new Date(startTime).toISOString(),
         endTime: new Date(endTime).toISOString(),
         status: STATUS.AVAILABLE
       });
 
       saveAvailabilities();
-      renderAvailabilities();
       closeModal();
+      renderDashboard();
       showToast('Vaga liberada com sucesso.');
     }
 
+    function handleLogout() {
+      currentUserId = null;
+      saveSession();
+      closeModal();
+      switchAuthMode('login');
+      renderDashboard();
+      showToast('Você saiu da conta.');
+    }
+
+    elements.loginTab.addEventListener('click', function () {
+      switchAuthMode('login');
+    });
+    elements.signupTab.addEventListener('click', function () {
+      switchAuthMode('signup');
+    });
+    elements.switchToSignupLink.addEventListener('click', function () {
+      switchAuthMode('signup');
+    });
+    elements.loginForm.addEventListener('submit', handleLogin);
+    elements.signupForm.addEventListener('submit', handleSignup);
     elements.openModalButton.addEventListener('click', openModal);
     elements.closeModalButton.addEventListener('click', closeModal);
+    elements.logoutButton.addEventListener('click', handleLogout);
+    elements.testButton.addEventListener('click', function () {
+      alert('Aplicação funcionando 🚀');
+    });
     elements.modalBackdrop.addEventListener('click', function (event) {
       if (event.target === elements.modalBackdrop) {
         closeModal();
       }
     });
     elements.availabilityForm.addEventListener('submit', handleCreateAvailability);
-    elements.testButton.addEventListener('click', function () {
-      alert('Aplicação funcionando 🚀');
-    });
     elements.availabilityList.addEventListener('click', function (event) {
       const button = event.target.closest('button[data-interest-id]');
       if (!button) {
@@ -583,9 +882,11 @@
       }
     });
 
+    ensureSeedUsers();
     loadAvailabilities();
-    renderGreeting();
-    renderAvailabilities();
+    loadSession();
+    switchAuthMode('login');
+    renderDashboard();
   </script>
 </body>
 </html>
