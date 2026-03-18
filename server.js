@@ -1,6 +1,11 @@
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
+import express from 'express';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
 const PORT = 4173;
 
@@ -21,9 +26,6 @@ if (!fs.existsSync(DATA_DIR)) {
 
 const USERS_FILE = path.join(DATA_DIR, 'users.json');
 const AVAILABILITIES_FILE = path.join(DATA_DIR, 'availabilities.json');
-
-console.log('Users file:', USERS_FILE);
-console.log('Availabilities file:', AVAILABILITIES_FILE);
 
 // Helper to read JSON file
 const readJSON = (filePath) => {
@@ -50,7 +52,7 @@ app.post('/api/users', (req, res) => {
     const newUser = req.body;
 
     if (users.some(u => u.phone === newUser.phone)) {
-        return res.status(400).json({ error: 'User already exists' });
+        return res.status(400).json({ error: 'Telefone já cadastrado!' });
     }
 
     users.push(newUser);
