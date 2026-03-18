@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VivendasPark MVP</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --danger: #dc2626;
+      --danger-hover: #b91c1c;
+      --border: #e2e8f0;
+      --success: #16a34a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #e0e7ff, #bfdbfe);
+      color: var(--text);
+      padding: 24px;
+      display: grid;
+      place-items: center;
+    }
+
+    .app {
+      width: min(920px, 100%);
+      background: var(--card);
+      border-radius: 20px;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.18);
+      padding: 28px;
+      display: grid;
+      gap: 20px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      font-size: clamp(1.5rem, 2vw, 2rem);
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+    }
+
+    .metric {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .metric small {
+      color: var(--muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .metric strong {
+      font-size: 1.5rem;
+    }
+
+    .panel {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      background: #fff;
+    }
+
+    form {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      align-items: end;
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    input,
+    select {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 0.95rem;
+      background: #fff;
+      color: var(--text);
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    button:hover {
+      background: var(--primary-hover);
+    }
+
+    .secondary {
+      background: #334155;
+    }
+
+    .secondary:hover {
+      background: #1e293b;
+    }
+
+    .danger {
+      background: var(--danger);
+    }
+
+    .danger:hover {
+      background: var(--danger-hover);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      margin-top: 10px;
+    }
+
+    th,
+    td {
+      padding: 10px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .status {
+      font-weight: 700;
+      color: var(--success);
+    }
+
+    .row-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .empty {
+      color: var(--muted);
+      text-align: center;
+      margin-top: 12px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <div>
+        <h1>VivendasPark MVP</h1>
+        <p class="subtitle">CRUD local de veículos com persistência em banco de dados local (localStorage).</p>
+      </div>
+      <button id="testButton" type="button">Clique para testar</button>
+    </header>
+
+    <section class="grid" aria-label="Métricas">
+      <article class="metric">
+        <small>Total de veículos</small>
+        <strong id="totalVehicles">0</strong>
+      </article>
+      <article class="metric">
+        <small>Última atualização</small>
+        <strong id="lastUpdate">-</strong>
+      </article>
+    </section>
+
+    <section class="panel" aria-label="Formulário de cadastro">
+      <form id="vehicleForm">
+        <label>
+          Placa
+          <input id="plate" name="plate" type="text" maxlength="8" placeholder="ABC1D23" required />
+        </label>
+        <label>
+          Apartamento
+          <input id="apartment" name="apartment" type="text" placeholder="Bloco A - 101" required />
+        </label>
+        <label>
+          Vaga
+          <input id="spot" name="spot" type="text" placeholder="Vaga 12" required />
+        </label>
+        <label>
+          Status
+          <select id="status" name="status" required>
+            <option value="Ativo">Ativo</option>
+            <option value="Visitante">Visitante</option>
+            <option value="Inativo">Inativo</option>
+          </select>
+        </label>
+        <div class="actions">
+          <button id="saveButton" type="submit">Salvar</button>
+          <button id="cancelEditButton" class="secondary" type="button">Cancelar edição</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel" aria-label="Lista de veículos">
+      <h2>Registros</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Placa</th>
+            <th>Apartamento</th>
+            <th>Vaga</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="vehicleRows"></tbody>
+      </table>
+      <p id="emptyState" class="empty">Nenhum veículo cadastrado ainda.</p>
+    </section>
+  </main>
+
+  <script>
+    const DB_KEY = 'vivendaspark_vehicles';
+    let vehicles = [];
+    let editingId = null;
+
+    const elements = {
+      form: document.getElementById('vehicleForm'),
+      plate: document.getElementById('plate'),
+      apartment: document.getElementById('apartment'),
+      spot: document.getElementById('spot'),
+      status: document.getElementById('status'),
+      rows: document.getElementById('vehicleRows'),
+      empty: document.getElementById('emptyState'),
+      totalVehicles: document.getElementById('totalVehicles'),
+      lastUpdate: document.getElementById('lastUpdate'),
+      saveButton: document.getElementById('saveButton'),
+      cancelEditButton: document.getElementById('cancelEditButton'),
+      testButton: document.getElementById('testButton')
+    };
+
+    function loadDatabase() {
+      const raw = localStorage.getItem(DB_KEY);
+      vehicles = raw ? JSON.parse(raw) : [];
+    }
+
+    function saveDatabase() {
+      localStorage.setItem(DB_KEY, JSON.stringify(vehicles));
+      elements.lastUpdate.textContent = new Date().toLocaleTimeString('pt-BR');
+    }
+
+    function resetForm() {
+      elements.form.reset();
+      editingId = null;
+      elements.saveButton.textContent = 'Salvar';
+    }
+
+    function fillForm(vehicle) {
+      elements.plate.value = vehicle.plate;
+      elements.apartment.value = vehicle.apartment;
+      elements.spot.value = vehicle.spot;
+      elements.status.value = vehicle.status;
+      editingId = vehicle.id;
+      elements.saveButton.textContent = 'Atualizar';
+    }
+
+    function removeVehicle(id) {
+      vehicles = vehicles.filter(function (vehicle) {
+        return vehicle.id !== id;
+      });
+      saveDatabase();
+      render();
+    }
+
+    function createOrUpdateVehicle(event) {
+      event.preventDefault();
+      const payload = {
+        id: editingId || Date.now().toString(),
+        plate: elements.plate.value.trim().toUpperCase(),
+        apartment: elements.apartment.value.trim(),
+        spot: elements.spot.value.trim(),
+        status: elements.status.value
+      };
+
+      if (editingId) {
+        vehicles = vehicles.map(function (vehicle) {
+          return vehicle.id === editingId ? payload : vehicle;
+        });
+      } else {
+        vehicles.push(payload);
+      }
+
+      saveDatabase();
+      resetForm();
+      render();
+    }
+
+    function render() {
+      elements.rows.innerHTML = '';
+      elements.totalVehicles.textContent = vehicles.length;
+      elements.empty.style.display = vehicles.length === 0 ? 'block' : 'none';
+
+      vehicles.forEach(function (vehicle) {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${vehicle.plate}</td>
+          <td>${vehicle.apartment}</td>
+          <td>${vehicle.spot}</td>
+          <td class="status">${vehicle.status}</td>
+          <td>
+            <div class="row-actions">
+              <button type="button" class="secondary" data-action="edit" data-id="${vehicle.id}">Editar</button>
+              <button type="button" class="danger" data-action="delete" data-id="${vehicle.id}">Excluir</button>
+            </div>
+          </td>
+        `;
+        elements.rows.appendChild(row);
+      });
+    }
+
+    elements.form.addEventListener('submit', createOrUpdateVehicle);
+    elements.cancelEditButton.addEventListener('click', resetForm);
+    elements.testButton.addEventListener('click', function () {
+      alert('Aplicação funcionando 🚀');
+    });
+
+    elements.rows.addEventListener('click', function (event) {
+      const button = event.target.closest('button[data-action]');
+      if (!button) {
+        return;
+      }
+
+      const id = button.dataset.id;
+      const action = button.dataset.action;
+      const vehicle = vehicles.find(function (item) {
+        return item.id === id;
+      });
+
+      if (!vehicle) {
+        return;
+      }
+
+      if (action === 'edit') {
+        fillForm(vehicle);
+      }
+
+      if (action === 'delete') {
+        removeVehicle(id);
+      }
+    });
+
+    loadDatabase();
+    render();
+  </script>
+</body>
+</html>
